@@ -39,10 +39,32 @@ var redraw = function() {
     }
 };
 
+// プレイヤーの移動処理を定義
+var movePlayer = function() {
+    // 上下左右の移動速度を定義
+    var SPEED = 2;
+
+    // キー番号だとわかりにくいため予め変数に格納
+    var RIGHT = 39;
+    var LEFT  = 37;
+
+    if(KEYS[RIGHT]) {
+        // プレイヤーのx座標を少し増やす
+        player_x += SPEED;
+    }
+    if(KEYS[LEFT]) {
+        // プレイヤーのx座標を少し減らす
+        player_x -= SPEED;
+    }
+};
+
 // メインループを定義
 var mainloop = function() {
     // 処理開始時間を保存
     var startTime = new Date();
+
+    // プレイヤーの移動処理
+    movePlayer();
 
     // 描画処理
     redraw();
