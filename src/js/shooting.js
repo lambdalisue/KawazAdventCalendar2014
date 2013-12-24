@@ -1,38 +1,27 @@
 "use strict"
-// --- 必要な変数をすべて定義（複数定義するばあいは , で区切る）
+// 全体で使用する変数を定義
+var canvas, ctx;
 
-// pocket -- 所持金
-var pocket;
-// apple_price -- りんごの値段
-// apple_count -- りんごの個数
-var apple_price, apple_count;
-// orange_price -- みかんの値段
-// orange_count -- みかんの個数
-var orange_price, orange_count;
+// ページロード時に呼び出される処理を指定
+// window.onload = function(){ から }; までの間が呼び出される。
+window.onload = function() {
+    // id を用いてキャンバスオブジェクトを取得し
+    // canvas 変数に代入
+    //
+    //   オブジェクト = document.getElementById('id');
+    //
+    canvas = document.getElementById('screen');
 
-// --- 文章題で与えられた数値を代入
+    // 2次元用の描画コンテキスト（とよばれるナニか）を取得し代入
+    ctx = canvas.getContext('2d');
 
-// 所持金は500円
-pocket = 500;
+    // 塗りつぶしの色を指定（白）
+    ctx.fillStyle = '#fff';
+    // 塗りつぶされた四角形（横,縦 = 20, 30）を（8, 5）の位置に描画
+    ctx.fillRect(8, 5, 20, 30);
 
-// りんごの値段は60円
-apple_price = 60;
-// りんごの数は3つ
-apple_count = 3;
-
-// みかんの値段は30円
-orange_price = 30;
-// みかんの数は4つ
-orange_count = 4;
-
-// 残高を求める
-//
-// balance -- 残高
-// 残高 = 所持金 - りんごの値段 x りんごの個数 - みかんの値段 x みかんの個数
-//
-// 注意: コンピュータでは掛け算は * を使う
-//
-var balance = pocket - apple_price * apple_count - orange_price * orange_count;
-
-// 残高を表示
-console.log("たかしくんの残金は" + balance + "円");
+    // 線の色を指定（赤）
+    ctx.strokeStyle = '#f00';
+    // からっぽの四角形（横,縦 = 90, 10）を（40, 55）の位置に描画
+    ctx.strokeRect(40, 55, 90, 10);
+};
