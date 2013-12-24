@@ -12,13 +12,17 @@ var player_x, player_y;
 
 // キーが押された時に呼び出される処理を指定
 window.onkeydown = function(e) {
-    // スペース（32番）が押されたか確かめる
-    if(e.keyCode == 32) {
-        // keyCodeが32の時だけ実行される部分
-        console.log("スペースキーが押されたよ");
-    } else {
-        // スペースキー以外の場合は単純に番号を表示
-        console.log(e.keyCode + "番のキーが押されたよ");
+    // 右矢印（39番）が押されたか確かめる
+    if(e.keyCode == 39) {
+        // プレイヤーのx座標を少し増やす
+        //   XXX += 2 という書き方は XXX = XXX + 2 を短くした書き方
+        player_x += 2;
+
+        // キャンバスをクリアする
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 新しい位置にプレイヤーを描画
+        ctx.drawImage(img_player, player_x, player_y);
     }
 };
 
