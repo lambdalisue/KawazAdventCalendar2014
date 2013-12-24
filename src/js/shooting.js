@@ -12,12 +12,32 @@ var player_x, player_y;
 
 // キーが押された時に呼び出される処理を指定
 window.onkeydown = function(e) {
-    // 右矢印（39番）が押されたか確かめる
-    if(e.keyCode == 39) {
-        // プレイヤーのx座標を少し増やす
-        //   XXX += 2 という書き方は XXX = XXX + 2 を短くした書き方
-        player_x += 2;
+    // 上下左右の移動速度を定義
+    var SPEED = 2;
 
+    // キー番号だとわかりにくいため予め変数に格納
+    var RIGHT = 39;
+    var LEFT  = 37;
+
+    // 移動処理を行ったかどうか（Yes/No）を表す変数を定義し
+    // 移動していない（false）で初期化
+    var moved = false;
+
+    if(e.keyCode == RIGHT) {
+        // プレイヤーのx座標を少し増やす
+        player_x += SPEED;
+        // 移動したので true を代入
+        moved = true;
+    } else if(e.keyCode == LEFT) {
+        // プレイヤーのx座標を少し減らす
+        player_x -= SPEED;
+        // 移動したので true を代入
+        moved = true;
+    }
+
+    // キー入力により移動したか調べる
+    // 注意: 真偽値なので moved == true のようにしなくても同じ意味になる
+    if(moved) {
         // キャンバスをクリアする
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
