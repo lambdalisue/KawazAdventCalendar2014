@@ -19,9 +19,10 @@ window.onload = function() {
 
     // Playerの画像を (20, 50) の位置に描画
     ctx.drawImage(img_player, 20, 50);
-    // 敵キャラの画像をランダムな位置に表示（とりあえず一匹）
-    // なお、下記のように () の中は , の位置で改行しても構わない
-    ctx.drawImage(img_enemy,
-                  Math.random() * (canvas.width - img_enemy.width),
-                  Math.random() * (canvas.height - img_enemy.height));
+    // 敵キャラの画像をランダムな位置に表示
+    for(var i=0; i<1000; i++) {
+        ctx.drawImage(img_enemy,
+                    Math.random() * (canvas.width - img_enemy.width),
+                    Math.random() * (canvas.height - img_enemy.height));
+    }
 };
