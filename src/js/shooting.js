@@ -1,6 +1,8 @@
 "use strict"
 // 全体で使用する変数を定義
 var canvas, ctx;
+// 敵キャラの数を定義
+var ENEMIES = 10;
 // プレイヤーの画像を保持する変数を定義
 var img_player;
 // 敵キャラの画像を保持する変数を定義
@@ -9,6 +11,10 @@ var img_enemy;
 // player_x -- プレイヤーのx座標
 // player_y -- プレイヤーのy座標
 var player_x, player_y;
+// 敵キャラの現在位置（配列）を保持する変数を定義し
+// ENEMIES分だけ要素数を持つ配列を代入
+var enemies_x = new Array(ENEMIES);
+var enemies_y = new Array(ENEMIES);
 
 // キーが押された時に呼び出される処理を指定
 window.onkeydown = function(e) {
@@ -43,6 +49,11 @@ window.onkeydown = function(e) {
 
         // 新しい位置にプレイヤーを描画
         ctx.drawImage(img_player, player_x, player_y);
+
+        // 敵キャラの画像を (enemies_x[i], enemies_y[i]) の位置に表示
+        for(var i=0; i<10; i++) {
+            ctx.drawImage(img_enemy, enemies_x[i], enemies_y[i]);
+        }
     }
 };
 
@@ -63,12 +74,16 @@ window.onload = function() {
     player_x = (canvas.width - player.width) / 2;
     player_y = (canvas.height -player.height) - 20;
 
+    // 敵キャラの初期位置を指定
+    for(var i=0; i<ENEMIES; i++) {
+        enemies_x[i] = Math.random() * (canvas.width - img_enemy.width);
+        enemies_y[i] = Math.random() * (canvas.height - img_enemy.height);
+    }
+
     // Playerの画像を (player_x, player_y) の位置に描画
     ctx.drawImage(img_player, player_x, player_y);
-    // 敵キャラの画像をランダムな位置に表示
+    // 敵キャラの画像を (enemies_x[i], enemies_y[i]) の位置に表示
     for(var i=0; i<10; i++) {
-        ctx.drawImage(img_enemy,
-                    Math.random() * (canvas.width - img_enemy.width),
-                    Math.random() * (canvas.height - img_enemy.height));
+        ctx.drawImage(img_enemy, enemies_x[i], enemies_y[i]);
     }
 };
