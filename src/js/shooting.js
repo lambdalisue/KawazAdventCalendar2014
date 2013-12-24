@@ -64,6 +64,24 @@ var movePlayer = function() {
         player_x = canvas.width - img_player.width;
     }
 };
+// 敵キャラの移動処理を定義
+var moveEnemies = function() {
+    // 上下左右の移動速度を定義
+    var SPEED = 2;
+
+    // 各敵キャラごとに処理を行う
+    for(var i=0; i<ENEMIES; i++) {
+        // 敵キャラのy座標を少し増やす
+        enemies_y[i] += SPEED;
+
+        // 敵キャラが下画面にはみ出た場合は上に戻す
+        if (enemies_y[i] > canvas.height) {
+            enemies_y[i] = -img_enemy.height;
+            // せっかくなので x座標を再度ランダムに設定
+            enemies_x[i] = Math.random() * (canvas.width - img_enemy.width);
+        }
+    }
+};
 
 // メインループを定義
 var mainloop = function() {
@@ -72,6 +90,8 @@ var mainloop = function() {
 
     // プレイヤーの移動処理
     movePlayer();
+    // 敵キャラの移動処理
+    moveEnemies();
 
     // 描画処理
     redraw();
