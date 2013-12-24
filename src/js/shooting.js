@@ -48,13 +48,20 @@ var movePlayer = function() {
     var RIGHT = 39;
     var LEFT  = 37;
 
-    if(KEYS[RIGHT]) {
+    if(KEYS[RIGHT] && player_x+img_player.width < canvas.width) {
         // プレイヤーのx座標を少し増やす
         player_x += SPEED;
     }
-    if(KEYS[LEFT]) {
+    if(KEYS[LEFT] && player_x > 0) {
         // プレイヤーのx座標を少し減らす
         player_x -= SPEED;
+    }
+
+    // プレイヤーがはみ出てしまった場合は強制的に中に戻す
+    if(player_x < 0) {
+        player_x = 0;
+    } else if (player_x + img_player.width > canvas.width) {
+        player_x = canvas.width - img_player.width;
     }
 };
 
