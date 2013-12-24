@@ -3,6 +3,8 @@
 var canvas, ctx;
 // プレイヤーの画像を保持する変数を定義
 var img_player;
+// 敵キャラの画像を保持する変数を定義
+var img_enemy;
 
 // ページロード時に呼び出される処理を指定
 window.onload = function() {
@@ -12,7 +14,11 @@ window.onload = function() {
 
     // Playerの画像（id='player'で指定された<img>）を取得
     img_player = document.getElementById('player');
+    // 敵キャラの画像（id='enemy'で指定された<img>）を取得
+    img_enemy = document.getElementById('enemy');
 
     // Playerの画像を (20, 50) の位置に描画
     ctx.drawImage(img_player, 20, 50);
+    // 敵キャラの画像を (30, 60) の位置に描画
+    ctx.drawImage(img_enemy, 30, 60);
 };
