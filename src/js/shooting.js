@@ -22,6 +22,6 @@ window.onload = function() {
     // 敵キャラの画像をランダムな位置に表示（とりあえず一匹）
     // なお、下記のように () の中は , の位置で改行しても構わない
     ctx.drawImage(img_enemy,
-                  Math.random() * canvas.width,
-                  Math.random() * canvas.height);
+                  Math.random() * (canvas.width - img_enemy.width),
+                  Math.random() * (canvas.height - img_enemy.height));
 };
