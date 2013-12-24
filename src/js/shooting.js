@@ -19,6 +19,20 @@ window.onload = function() {
 
     // Playerの画像を (20, 50) の位置に描画
     ctx.drawImage(img_player, 20, 50);
-    // 敵キャラの画像を (30, 60) の位置に描画
-    ctx.drawImage(img_enemy, 30, 60);
+    // 敵キャラの画像をいろんなところに描画
+    ctx.drawImage(img_enemy, 60, 20);
+    ctx.drawImage(img_enemy, 60, 30);
+    ctx.drawImage(img_enemy, 60, 40);
+    ctx.drawImage(img_enemy, 60, 50);
+    ctx.drawImage(img_enemy, 60, 90);
+    ctx.drawImage(img_enemy, 90, 20);
+    ctx.drawImage(img_enemy, 90, 30);
+    ctx.drawImage(img_enemy, 90, 40);
+    ctx.drawImage(img_enemy, 90, 50);
+    ctx.drawImage(img_enemy, 90, 90);
+    ctx.drawImage(img_enemy, 120, 20);
+    ctx.drawImage(img_enemy, 120, 30);
+    ctx.drawImage(img_enemy, 120, 40);
+    ctx.drawImage(img_enemy, 120, 50);
+    ctx.drawImage(img_enemy, 120, 90);
 };
