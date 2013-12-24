@@ -6,6 +6,12 @@ var img_player;
 // 敵キャラの画像を保持する変数を定義
 var img_enemy;
 
+// キーが押された時に呼び出される処理を指定
+window.onkeydown = function(e) {
+    // キーボードが押されるとこの内部の処理が実行される
+    console.log("キーボードが押されたよ");
+};
+
 // ページロード時に呼び出される処理を指定
 window.onload = function() {
     // コンテキストを取得（おまじない）
@@ -20,7 +26,7 @@ window.onload = function() {
     // Playerの画像を (20, 50) の位置に描画
     ctx.drawImage(img_player, 20, 50);
     // 敵キャラの画像をランダムな位置に表示
-    for(var i=0; i<1000; i++) {
+    for(var i=0; i<10; i++) {
         ctx.drawImage(img_enemy,
                     Math.random() * (canvas.width - img_enemy.width),
                     Math.random() * (canvas.height - img_enemy.height));
