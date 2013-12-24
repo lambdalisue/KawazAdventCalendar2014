@@ -16,6 +16,20 @@ var player_x, player_y;
 var enemies_x = new Array(ENEMIES);
 var enemies_y = new Array(ENEMIES);
 
+// 再描画する関数（無引数、無戻り値）
+var redraw = function() {
+    // キャンバスをクリアする
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 新しい位置にプレイヤーを描画
+    ctx.drawImage(img_player, player_x, player_y);
+
+    // 敵キャラの画像を (enemies_x[i], enemies_y[i]) の位置に表示
+    for(var i=0; i<ENEMIES; i++) {
+        ctx.drawImage(img_enemy, enemies_x[i], enemies_y[i]);
+    }
+};
+
 // キーが押された時に呼び出される処理を指定
 window.onkeydown = function(e) {
     // 上下左右の移動速度を定義
@@ -44,16 +58,8 @@ window.onkeydown = function(e) {
     // キー入力により移動したか調べる
     // 注意: 真偽値なので moved == true のようにしなくても同じ意味になる
     if(moved) {
-        // キャンバスをクリアする
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // 新しい位置にプレイヤーを描画
-        ctx.drawImage(img_player, player_x, player_y);
-
-        // 敵キャラの画像を (enemies_x[i], enemies_y[i]) の位置に表示
-        for(var i=0; i<10; i++) {
-            ctx.drawImage(img_enemy, enemies_x[i], enemies_y[i]);
-        }
+        // 再描画する
+        redraw();
     }
 };
 
@@ -80,10 +86,6 @@ window.onload = function() {
         enemies_y[i] = Math.random() * (canvas.height - img_enemy.height);
     }
 
-    // Playerの画像を (player_x, player_y) の位置に描画
-    ctx.drawImage(img_player, player_x, player_y);
-    // 敵キャラの画像を (enemies_x[i], enemies_y[i]) の位置に表示
-    for(var i=0; i<10; i++) {
-        ctx.drawImage(img_enemy, enemies_x[i], enemies_y[i]);
-    }
+    // (再)描画する
+    redraw();
 };
