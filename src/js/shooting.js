@@ -4,6 +4,12 @@ var canvas, ctx;
 // FPS管理に使用するパラメータを定義
 var FPS = 30;
 var MSPF = 1000 / FPS;
+// キー状態管理変数の定義（確か256以上のキーコードは無いと思う…ちょっと怪しい）
+var KEYS = new Array(256);
+// キーの状態を false （押されていない）で初期化
+for(var i=0; i<KEYS.length; i++) {
+    KEYS[i] = false;
+}
 // 敵キャラの数を定義
 var ENEMIES = 10;
 // プレイヤーの画像を保持する変数を定義
@@ -53,38 +59,16 @@ var mainloop = function() {
     }
 };
 
-//// キーが押された時に呼び出される処理を指定
-//window.onkeydown = function(e) {
-//    // 上下左右の移動速度を定義
-//    var SPEED = 2;
-//
-//    // キー番号だとわかりにくいため予め変数に格納
-//    var RIGHT = 39;
-//    var LEFT  = 37;
-//
-//    // 移動処理を行ったかどうか（Yes/No）を表す変数を定義し
-//    // 移動していない（false）で初期化
-//    var moved = false;
-//
-//    if(e.keyCode == RIGHT) {
-//        // プレイヤーのx座標を少し増やす
-//        player_x += SPEED;
-//        // 移動したので true を代入
-//        moved = true;
-//    } else if(e.keyCode == LEFT) {
-//        // プレイヤーのx座標を少し減らす
-//        player_x -= SPEED;
-//        // 移動したので true を代入
-//        moved = true;
-//    }
-//
-//    // キー入力により移動したか調べる
-//    // 注意: 真偽値なので moved == true のようにしなくても同じ意味になる
-//    if(moved) {
-//        // 再描画する
-//        redraw();
-//    }
-//};
+// キーが押された時に呼び出される処理を指定
+window.onkeydown = function(e) {
+    // キーを押された状態に更新
+    KEYS[e.keyCode] = true;
+}
+// キーが離された時に呼び出される処理を指定
+window.onkeyup = function(e) {
+    // キーを離された状態に更新
+    KEYS[e.keyCode] = false;
+}
 
 // ページロード時に呼び出される処理を指定
 window.onload = function() {
