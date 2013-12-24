@@ -5,6 +5,10 @@ var canvas, ctx;
 var img_player;
 // 敵キャラの画像を保持する変数を定義
 var img_enemy;
+// プレイヤーの現在位置を保持する変数を定義
+// player_x -- プレイヤーのx座標
+// player_y -- プレイヤーのy座標
+var player_x, player_y;
 
 // キーが押された時に呼び出される処理を指定
 window.onkeydown = function(e) {
@@ -29,8 +33,14 @@ window.onload = function() {
     // 敵キャラの画像（id='enemy'で指定された<img>）を取得
     img_enemy = document.getElementById('enemy');
 
-    // Playerの画像を (20, 50) の位置に描画
-    ctx.drawImage(img_player, 20, 50);
+    // Playerの初期位置を指定
+    // player_x = キャンバスの左右中央
+    // player_y = キャンバスの下から20px上
+    player_x = (canvas.width - player.width) / 2;
+    player_y = (canvas.height -player.height) - 20;
+
+    // Playerの画像を (player_x, player_y) の位置に描画
+    ctx.drawImage(img_player, player_x, player_y);
     // 敵キャラの画像をランダムな位置に表示
     for(var i=0; i<10; i++) {
         ctx.drawImage(img_enemy,
