@@ -1,6 +1,9 @@
 "use strict"
 // 全体で使用する変数を定義
 var canvas, ctx;
+// FPS管理に使用するパラメータを定義
+var FPS = 30;
+var MSPF = 1000 / FPS;
 // 敵キャラの数を定義
 var ENEMIES = 10;
 // プレイヤーの画像を保持する変数を定義
@@ -30,38 +33,58 @@ var redraw = function() {
     }
 };
 
-// キーが押された時に呼び出される処理を指定
-window.onkeydown = function(e) {
-    // 上下左右の移動速度を定義
-    var SPEED = 2;
+// メインループを定義
+var mainloop = function() {
+    // 処理開始時間を保存
+    var startTime = new Date();
 
-    // キー番号だとわかりにくいため予め変数に格納
-    var RIGHT = 39;
-    var LEFT  = 37;
+    // 描画処理
+    redraw();
 
-    // 移動処理を行ったかどうか（Yes/No）を表す変数を定義し
-    // 移動していない（false）で初期化
-    var moved = false;
-
-    if(e.keyCode == RIGHT) {
-        // プレイヤーのx座標を少し増やす
-        player_x += SPEED;
-        // 移動したので true を代入
-        moved = true;
-    } else if(e.keyCode == LEFT) {
-        // プレイヤーのx座標を少し減らす
-        player_x -= SPEED;
-        // 移動したので true を代入
-        moved = true;
-    }
-
-    // キー入力により移動したか調べる
-    // 注意: 真偽値なので moved == true のようにしなくても同じ意味になる
-    if(moved) {
-        // 再描画する
-        redraw();
+    // 処理経過時間および次のループまでの間隔を計算
+    var deltaTime = (new Date()) - startTime;
+    var interval = MSPF - deltaTime;
+    if(interval > 0) {
+        // 処理が早すぎるので次のループまで少し待つ
+        setTimeout(mainloop, interval);
+    } else {
+        // 処理が遅すぎるので即次のループを実行する
+        mainloop();
     }
 };
+
+//// キーが押された時に呼び出される処理を指定
+//window.onkeydown = function(e) {
+//    // 上下左右の移動速度を定義
+//    var SPEED = 2;
+//
+//    // キー番号だとわかりにくいため予め変数に格納
+//    var RIGHT = 39;
+//    var LEFT  = 37;
+//
+//    // 移動処理を行ったかどうか（Yes/No）を表す変数を定義し
+//    // 移動していない（false）で初期化
+//    var moved = false;
+//
+//    if(e.keyCode == RIGHT) {
+//        // プレイヤーのx座標を少し増やす
+//        player_x += SPEED;
+//        // 移動したので true を代入
+//        moved = true;
+//    } else if(e.keyCode == LEFT) {
+//        // プレイヤーのx座標を少し減らす
+//        player_x -= SPEED;
+//        // 移動したので true を代入
+//        moved = true;
+//    }
+//
+//    // キー入力により移動したか調べる
+//    // 注意: 真偽値なので moved == true のようにしなくても同じ意味になる
+//    if(moved) {
+//        // 再描画する
+//        redraw();
+//    }
+//};
 
 // ページロード時に呼び出される処理を指定
 window.onload = function() {
@@ -86,6 +109,6 @@ window.onload = function() {
         enemies_y[i] = Math.random() * (canvas.height - img_enemy.height);
     }
 
-    // (再)描画する
-    redraw();
+    // メインループを開始する
+    mainloop();
 };
