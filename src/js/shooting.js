@@ -280,6 +280,49 @@ var hitCheck = function(x1, y1, obj1, x2, y2, obj2) {
     }
 };
 
+// タイトルループを定義
+var titleloop = function() {
+    // 処理開始時間を保存
+    var startTime = new Date();
+
+    // キャンバスをクリアする
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Hit SPACE to Start と表示
+    ctx.save();
+    ctx.font = '20px sans-serif';
+    ctx.textBaseline = 'middle';    // 上下位置のベースラインを中心に
+    ctx.fillStyle = '#fff';
+    var text = "Hit SPACE to Start";
+    var width = ctx.measureText(text).width;
+    ctx.fillText(text,
+                 (canvas.width - width) / 2,
+                 canvas.height / 2);
+    ctx.restore();
+
+    // スペースが押されていた場合は mainloop を呼び出して、titleloopを終了
+    var SPACE = 32;
+    if(KEYS[SPACE]) {
+        // メインループを呼び出す
+        mainloop();
+        // 継続処理をせずに関数を終了（titleloopを抜ける）
+        return;
+    }
+
+    // 処理経過時間および次のループまでの間隔を計算
+    var deltaTime = (new Date()) - startTime;
+    var interval = MSPF - deltaTime;
+    if(interval > 0) {
+        // 処理が早すぎるので次のループまで少し待つ
+        setTimeout(titleloop, interval);
+    } else {
+        // 処理が遅すぎるので即次のループを実行する
+        // Note: titleloop()を直接呼び出すとフリーズします。
+        setTimeout(titleloop, 0);
+    }
+};
+
+
 // メインループを定義
 var mainloop = function() {
     // 処理開始時間を保存
@@ -359,7 +402,8 @@ var mainloop = function() {
         setTimeout(mainloop, interval);
     } else {
         // 処理が遅すぎるので即次のループを実行する
-        mainloop();
+        // Note: mainloop() を直接呼び出すとフリーズするの忘れてた……
+        setTimeout(mainloop, 0);
     }
 };
 
@@ -407,6 +451,6 @@ window.onload = function() {
         enemies_hp[i] = 2;
     }
 
-    // メインループを開始する
-    mainloop();
+    // タイトルループを開始する
+    titleloop();
 };
