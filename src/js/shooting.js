@@ -58,7 +58,16 @@ var redraw = function() {
 
     // 生きている場合だけ新しい位置にプレイヤーを描画
     if(player_hp > 0) {
+        // 透過度を変えるのでコンテキストの状態を保存
+        ctx.save();
+        // 無敵時間の状態に応じて描画の透過度を変更
+        if(player_star_interval % 2 != 0) {
+            // 半透明に描画する
+            ctx.globalAlpha = 0.5;
+        }
         ctx.drawImage(img_player, player_x, player_y);
+        // コンテキストの状態を戻す
+        ctx.restore();
     }
     // 弾の画像を (bullets_x[i], bullets_y[i]) の位置に表示
     for(var i=0; i<BULLETS; i++) {
