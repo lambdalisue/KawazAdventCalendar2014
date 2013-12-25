@@ -124,6 +124,24 @@ var redraw = function() {
                      (canvas.width - width) / 2,
                      canvas.height / 2);
     }
+    // 敵を殲滅していた場合はゲームクリア画面を表示
+    else if(killed == ENEMIES){
+        // 全体を半透明の黒い四角で覆う（オーバーレイ）
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1.0;
+
+        // 真ん中に大きな文字でゲームクリア（白）と表示する
+        ctx.font = '20px sans-serif';
+        ctx.textBaseline = 'middle';    // 上下位置のベースラインを中心に
+        ctx.fillStyle = '#fff';
+        text = "Game Clear";
+        width = ctx.measureText(text).width;
+        ctx.fillText(text,
+                     (canvas.width - width) / 2,
+                     canvas.height / 2);
+    }
 
     // コンテキストの状態を復元
     ctx.restore();
