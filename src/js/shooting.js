@@ -10,6 +10,8 @@ var KEYS = new Array(256);
 for(var i=0; i<KEYS.length; i++) {
     KEYS[i] = false;
 }
+// 発射インターバルの値を定義（この値が大きいほど連射が遅くなる）
+var FIRE_INTERVAL = 20;
 // 弾の数を定義（同時に描画される弾の最大数より大きい必要あり）
 var BULLETS = 5;
 // 敵キャラの数を定義
@@ -40,7 +42,8 @@ var player_bullets_hp = new Array(BULLETS);
 // 敵キャラのヒットポイント（配列）を保持する変数を定義し
 // ENEMIES分だけ要素数を持つ配列を代入
 var enemies_hp = new Array(ENEMIES);
-
+// プレイヤーの発射インターバル
+var player_fire_interval=0;
 
 // 再描画する関数（無引数、無戻り値）
 var redraw = function() {
@@ -94,7 +97,8 @@ var movePlayer = function() {
         player_x -= SPEED;
     }
 
-    if(KEYS[SPACE]) {
+    // スペースキーが押され、なおかつ発射インターバルが0の時だけ発射する
+    if(KEYS[SPACE] && player_fire_interval == 0) {
         // 未使用の弾があれば発射する
         for(var i=0; i<BULLETS; i++) {
             if(player_bullets_hp[i] == 0) {
@@ -104,12 +108,21 @@ var movePlayer = function() {
                 // 弾のHPを1にする。これにより次のループから描画や移動処理
                 // が行われるようになる
                 player_bullets_hp[i] = 1;
+                // 弾を打ったので発射インターバルの値を上げる
+                player_fire_interval = FIRE_INTERVAL;
                 // 弾は打ったのでループを抜ける
                 // ループ処理を途中でやめる場合は `break` を使う
                 break;
             }
         }
     }
+    // 発射インターバルの値が0より大きい場合は値を減らす。
+    if(player_fire_interval > 0) {
+        // 変数++; や 変数--; はそれぞれ1増やす、減らすという処理
+        // そのため下記は `player_fire_interval -= 1;`と等価
+        player_fire_interval--;
+    }
+
 
     // プレイヤーがはみ出てしまった場合は強制的に中に戻す
     if(player_x < 0) {
