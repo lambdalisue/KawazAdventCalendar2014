@@ -44,6 +44,8 @@ var player_bullets_hp = new Array(BULLETS);
 var enemies_hp = new Array(ENEMIES);
 // プレイヤーの発射インターバル
 var player_fire_interval=0;
+// 倒した敵の数を保存する変数を定義
+var killed = 0;
 
 // 再描画する関数（無引数、無戻り値）
 var redraw = function() {
@@ -80,6 +82,17 @@ var redraw = function() {
     // 残りHP x 5 の短形を描画（赤）
     ctx.fillStyle = '#f00';
     ctx.fillRect(10, canvas.height-10, player_hp * 5, 5);
+
+    // 「倒した敵の数/全敵の数」という文字列を作成
+    var text = "Killed: " + killed + "/" + ENEMIES;
+    // 文字列の（描画）横幅を計算する
+    var width = ctx.measureText(text).width;
+    // 文字列を描画（白）
+    ctx.fillStyle = '#fff';
+    ctx.fillText(text,
+                 canvas.width - 10 - width,
+                 canvas.height - 10);
+
     // コンテキストの状態を復元
     ctx.restore();
 };
@@ -239,6 +252,10 @@ var mainloop = function() {
                     // 当たっているのでお互いのHPを1削る
                     player_hp -= 1;
                     enemies_hp[i] -=1;
+                    // 敵が死んだ場合は killed を増やす
+                    if(enemies_hp[i] == 0) {
+                        killed++;
+                    }
                 }
             }
         }
@@ -264,6 +281,10 @@ var mainloop = function() {
                     // 当たっているのでお互いのHPを1削る
                     player_bullets_hp[j] -= 1;
                     enemies_hp[i] -=1;
+                    // 敵が死んだ場合は killed を増やす
+                    if(enemies_hp[i] == 0) {
+                        killed++;
+                    }
                 }
             }
         }
