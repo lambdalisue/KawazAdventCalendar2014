@@ -281,6 +281,7 @@ var hitCheck = function(x1, y1, obj1, x2, y2, obj2) {
 };
 
 // タイトルループを定義
+var titleloop_blinker = 0;
 var titleloop = function() {
     // 処理開始時間を保存
     var startTime = new Date();
@@ -288,16 +289,54 @@ var titleloop = function() {
     // キャンバスをクリアする
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Hit SPACE to Start と表示
     ctx.save();
-    ctx.font = '20px sans-serif';
+    // ラインで装飾
+    // 参考: http://www.html5.jp/canvas/ref/method/lineTo.html
+    ctx.strokeStyle = '#fff';
+    ctx.beginPath();
+    ctx.moveTo(20, 100);
+    ctx.lineTo(canvas.width-20, 100);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(20, 145);
+    ctx.lineTo(canvas.width-20, 145);
+    ctx.stroke();
+    ctx.strokeStyle = '#444';
+    ctx.beginPath();
+    ctx.moveTo(30, 90);
+    ctx.lineTo(canvas.width-30, 90);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(30, 155);
+    ctx.lineTo(canvas.width-30, 155);
+    ctx.stroke();
+
+    var text, width;
+    // JavaScript Shooting と表示
+    ctx.font = '20px serif';
     ctx.textBaseline = 'middle';    // 上下位置のベースラインを中心に
     ctx.fillStyle = '#fff';
-    var text = "Hit SPACE to Start";
-    var width = ctx.measureText(text).width;
-    ctx.fillText(text,
-                 (canvas.width - width) / 2,
-                 canvas.height / 2);
+    text = "JavaScript Shooting";
+    width = ctx.measureText(text).width;
+    ctx.fillText(text, (canvas.width - width) / 2, 120);
+
+    // Hit SPACE to Start と表示
+    titleloop_blinker++;
+    if(titleloop_blinker > 20) {
+        // 点滅処理様に透過度を調整
+        ctx.globalAlpha = 0.5;
+        // 100を超えていたら0に戻す
+        if(titleloop_blinker > 30) {
+            titleloop_blinker = 0;
+        }
+    }
+    ctx.font = '12px sans-serif';
+    ctx.textBaseline = 'middle';    // 上下位置のベースラインを中心に
+    ctx.fillStyle = '#ddd';
+    text = "Hit SPACE to Start";
+    width = ctx.measureText(text).width;
+    ctx.fillText(text, (canvas.width - width) / 2, 240);
+    ctx.globalAlpha = 1.0;
     ctx.restore();
 
     // スペースが押されていた場合は mainloop を呼び出して、titleloopを終了
