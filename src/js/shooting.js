@@ -10,22 +10,33 @@ var KEYS = new Array(256);
 for(var i=0; i<KEYS.length; i++) {
     KEYS[i] = false;
 }
+// 弾の数を定義（同時に描画される弾の最大数より大きい必要あり）
+var BULLETS = 5;
 // 敵キャラの数を定義
 var ENEMIES = 10;
 // プレイヤーの画像を保持する変数を定義
 var img_player;
+// プレイヤーの弾画像を保持する変数を定義
+var img_player_bullet;
 // 敵キャラの画像を保持する変数を定義
 var img_enemy;
 // プレイヤーの現在位置を保持する変数を定義
 // player_x -- プレイヤーのx座標
 // player_y -- プレイヤーのy座標
 var player_x, player_y;
+// プレイヤーの弾の現在位置（配列）を保持する変数を定義し
+// BULLETS分だけ要素数を持つ配列を代入
+var player_bullets_x = new Array(BULLETS);
+var player_bullets_y = new Array(BULLETS);
 // 敵キャラの現在位置（配列）を保持する変数を定義し
 // ENEMIES分だけ要素数を持つ配列を代入
 var enemies_x = new Array(ENEMIES);
 var enemies_y = new Array(ENEMIES);
 // プレイヤーのヒットポイント
 var player_hp;
+// 弾のヒットポイント（配列）を保持する変数を定義し
+// BULLETS分だけ要素数を持つ配列を代入
+var player_bullets_hp = new Array(BULLETS);
 // 敵キャラのヒットポイント（配列）を保持する変数を定義し
 // ENEMIES分だけ要素数を持つ配列を代入
 var enemies_hp = new Array(ENEMIES);
@@ -39,6 +50,15 @@ var redraw = function() {
     // 生きている場合だけ新しい位置にプレイヤーを描画
     if(player_hp > 0) {
         ctx.drawImage(img_player, player_x, player_y);
+    }
+    // 弾の画像を (bullets_x[i], bullets_y[i]) の位置に表示
+    for(var i=0; i<BULLETS; i++) {
+        // 生きている場合だけ描画
+        if(player_bullets_hp[i] > 0) {
+            ctx.drawImage(img_player_bullet,
+                          player_bullets_x[i],
+                          player_bullets_y[i]);
+        }
     }
 
     // 敵キャラの画像を (enemies_x[i], enemies_y[i]) の位置に表示
@@ -63,6 +83,7 @@ var movePlayer = function() {
     // キー番号だとわかりにくいため予め変数に格納
     var RIGHT = 39;
     var LEFT  = 37;
+    var SPACE = 32;
 
     if(KEYS[RIGHT] && player_x+img_player.width < canvas.width) {
         // プレイヤーのx座標を少し増やす
@@ -73,11 +94,51 @@ var movePlayer = function() {
         player_x -= SPEED;
     }
 
+    if(KEYS[SPACE]) {
+        // 未使用の弾があれば発射する
+        for(var i=0; i<BULLETS; i++) {
+            if(player_bullets_hp[i] == 0) {
+                // 弾の初期位置はプレイヤーと同じ位置にする
+                player_bullets_x[i] = player_x;
+                player_bullets_y[i] = player_y;
+                // 弾のHPを1にする。これにより次のループから描画や移動処理
+                // が行われるようになる
+                player_bullets_hp[i] = 1;
+                // 弾は打ったのでループを抜ける
+                // ループ処理を途中でやめる場合は `break` を使う
+                break;
+            }
+        }
+    }
+
     // プレイヤーがはみ出てしまった場合は強制的に中に戻す
     if(player_x < 0) {
         player_x = 0;
     } else if (player_x + img_player.width > canvas.width) {
         player_x = canvas.width - img_player.width;
+    }
+};
+// プレイヤーの弾の移動処理を定義
+var movePlayerBullets = function() {
+    // 上下左右の移動速度を定義
+    var SPEED = -6;
+
+    // 各弾ごとに処理を行う
+    for(var i=0; i<BULLETS; i++) {
+        // ヒットポイントを確認し、生きている場合のみ処理をする
+        if(player_bullets_hp[i] <= 0) {
+            // ループの残りのステップを無視して次のループに行く場合
+            // は `continue` を指定する
+            continue;
+        }
+
+        // 弾のy座標を少し増やす（減らす）
+        player_bullets_y[i] += SPEED;
+
+        // 弾が上画面にはみ出た場合はHPを0にして未使用状態に戻す
+        if (player_bullets_y[i] < img_player_bullet.height) {
+            player_bullets_hp[i] = 0;
+        }
     }
 };
 // 敵キャラの移動処理を定義
@@ -139,6 +200,8 @@ var mainloop = function() {
 
     // プレイヤーの移動処理
     movePlayer();
+    // プレイヤーの弾の移動処理
+    movePlayerBullets();
     // 敵キャラの移動処理
     moveEnemies();
 
@@ -156,7 +219,6 @@ var mainloop = function() {
             }
         }
     }
-
 
     // 描画処理
     redraw();
@@ -192,6 +254,8 @@ window.onload = function() {
 
     // Playerの画像（id='player'で指定された<img>）を取得
     img_player = document.getElementById('player');
+    // Playerの弾画像（id='player_bullet'で指定された<img>）を取得
+    img_player_bullet = document.getElementById('player_bullet');
     // 敵キャラの画像（id='enemy'で指定された<img>）を取得
     img_enemy = document.getElementById('enemy');
 
@@ -202,6 +266,12 @@ window.onload = function() {
     player_y = (canvas.height -player.height) - 20;
     player_hp = 10;
 
+    // 弾の初期位置およびHPを指定
+    for(var i=0; i<BULLETS; i++) {
+        player_bullets_x[i] = 0;
+        player_bullets_y[i] = 0;
+        player_bullets_hp[i] = 0;
+    }
     // 敵キャラの初期位置およびHPを指定
     for(var i=0; i<ENEMIES; i++) {
         enemies_x[i] = Math.random() * (canvas.width - img_enemy.width);
