@@ -71,6 +71,17 @@ var redraw = function() {
             ctx.drawImage(img_enemy, enemies_x[i], enemies_y[i]);
         }
     }
+
+    // コンテキストの状態を保存（fillStyleを変えたりするので）
+    ctx.save();
+    // HPの最大値（10）x 5 の短形を描画（白）
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(10, canvas.height-10, 10 * 5, 5);
+    // 残りHP x 5 の短形を描画（赤）
+    ctx.fillStyle = '#f00';
+    ctx.fillRect(10, canvas.height-10, player_hp * 5, 5);
+    // コンテキストの状態を復元
+    ctx.restore();
 };
 
 // プレイヤーの移動処理を定義
