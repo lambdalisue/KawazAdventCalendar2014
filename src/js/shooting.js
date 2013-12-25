@@ -232,6 +232,31 @@ var mainloop = function() {
             }
         }
     }
+    // プレイヤー弾と敵キャラの当たり判定（プレイヤーが生きている場合）
+    if(player_hp > 0) {
+        for(var i=0; i<ENEMIES; i++) {
+            // 敵が死んでいる場合はスルーする
+            if(enemies_hp[i] <= 0) {
+                continue;
+            }
+            for(var j=0; j<BULLETS; j++) {
+                // 弾が死んでいる場合はスルーする
+                if(player_bullets_hp[j] <= 0) {
+                    continue;
+                }
+                if(hitCheck(player_bullets_x[j],
+                            player_bullets_y[j],
+                            img_player_bullet,
+                            enemies_x[i],
+                            enemies_y[i],
+                            img_enemy)){
+                    // 当たっているのでお互いのHPを1削る
+                    player_bullets_hp[j] -= 1;
+                    enemies_hp[i] -=1;
+                }
+            }
+        }
+    }
 
     // 描画処理
     redraw();
