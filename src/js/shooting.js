@@ -12,6 +12,8 @@ for(var i=0; i<KEYS.length; i++) {
 }
 // 発射インターバルの値を定義（この値が大きいほど連射が遅くなる）
 var FIRE_INTERVAL = 20;
+// 無敵インターバルの値を定義（この値が大きいほど無敵時間が長くなる）
+var STAR_INTERVAL = 20;
 // 弾の数を定義（同時に描画される弾の最大数より大きい必要あり）
 var BULLETS = 5;
 // 敵キャラの数を定義
@@ -44,6 +46,8 @@ var player_bullets_hp = new Array(BULLETS);
 var enemies_hp = new Array(ENEMIES);
 // プレイヤーの発射インターバル
 var player_fire_interval=0;
+// プレイヤーの無敵インターバル
+var player_star_interval=0;
 // 倒した敵の数を保存する変数を定義
 var killed = 0;
 
@@ -243,7 +247,8 @@ var mainloop = function() {
     moveEnemies();
 
     // プレイヤーと敵キャラの当たり判定（プレイヤーが生きている場合）
-    if(player_hp > 0) {
+    // かつプレイヤーが無敵ではない場合
+    if(player_hp > 0 && player_star_interval == 0) {
         for(var i=0; i<ENEMIES; i++) {
             // 敵が生きている場合のみ判定する
             if(enemies_hp[i] > 0) {
@@ -256,10 +261,17 @@ var mainloop = function() {
                     if(enemies_hp[i] == 0) {
                         killed++;
                     }
+                    // プレイヤーを無敵状態にする
+                    player_star_interval = STAR_INTERVAL;
                 }
             }
         }
     }
+    // プレイヤーの無敵インターバルを減少させる
+    if(player_star_interval > 0) {
+        player_star_interval--;
+    }
+
     // プレイヤー弾と敵キャラの当たり判定（プレイヤーが生きている場合）
     if(player_hp > 0) {
         for(var i=0; i<ENEMIES; i++) {
