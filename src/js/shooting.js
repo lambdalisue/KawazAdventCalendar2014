@@ -106,6 +106,25 @@ var redraw = function() {
                  canvas.width - 10 - width,
                  canvas.height - 10);
 
+    // プレイヤーが死んでいた場合ゲームオーバー画面を表示する
+    if(player_hp <= 0){
+        // 全体を半透明の黒い四角で覆う（オーバーレイ）
+        ctx.globalAlpha = 0.5;
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1.0;
+
+        // 真ん中に大きな文字でゲームオーバー（赤）と表示する
+        ctx.font = '20px sans-serif';
+        ctx.textBaseline = 'middle';    // 上下位置のベースラインを中心に
+        ctx.fillStyle = '#f00';
+        text = "Game Over";
+        width = ctx.measureText(text).width;
+        ctx.fillText(text,
+                     (canvas.width - width) / 2,
+                     canvas.height / 2);
+    }
+
     // コンテキストの状態を復元
     ctx.restore();
 };
