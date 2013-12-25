@@ -23,3 +23,16 @@
 まぁこの時点でご存じの方は冷や汗ものだと思いますが、いろいろと制限をすればJavaScriptは
 初心者でも扱える言語です（だと信じたい）。
 
+## YouTube
+-   この記事で作成するゲーム  
+
+    http://www.youtube.com/watch?v=zIupbzGrTRQ&feature=youtu.be
+
+-   没になったもの（初心者用）
+
+    http://www.youtube.com/watch?v=aQDjtn3AhO0
+
+-   没になったもの（初級者用）
+
+    http://www.youtube.com/watch?v=ak0ns7_-lUc
+    http://www.youtube.com/watch?v=s-1Fw5p1YNM
